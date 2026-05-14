@@ -1,6 +1,8 @@
 package cn.iocoder.yudao.module.yqcrm.dal.dataobject.offerreport;
 
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.*;
 import java.math.BigDecimal;
 import java.math.BigDecimal;
@@ -136,4 +138,4 @@ public class OfferReportDO extends BaseDO {
     private String remark;
 
 
-}
+}
