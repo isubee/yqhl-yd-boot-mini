@@ -212,6 +212,80 @@ INSERT INTO `infra_config` (`id`, `category`, `type`, `name`, `config_key`, `val
 COMMIT;
 
 -- ----------------------------
+-- Table structure for infra_biz_reference
+-- ----------------------------
+DROP TABLE IF EXISTS `infra_biz_reference`;
+CREATE TABLE `infra_biz_reference`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '参照编码',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '参照名称',
+  `table_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '表名',
+  `value_field` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '值字段',
+  `label_field` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '展示字段',
+  `row_key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '行主键字段',
+  `default_page_size` int NOT NULL DEFAULT 10 COMMENT '默认分页大小',
+  `permission` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '业务权限标识',
+  `tenant_column` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '租户字段',
+  `deleted_column` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '逻辑删除字段',
+  `deleted_value` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '未删除值',
+  `status` tinyint NOT NULL DEFAULT 0 COMMENT '状态',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
+  `creator` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updater` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_code`(`code` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '业务参照表';
+
+-- ----------------------------
+-- Records of infra_biz_reference
+-- ----------------------------
+BEGIN;
+INSERT INTO `infra_biz_reference` (`id`, `code`, `name`, `table_name`, `value_field`, `label_field`, `row_key`, `default_page_size`, `permission`, `tenant_column`, `deleted_column`, `deleted_value`, `status`, `remark`, `creator`, `create_time`, `updater`, `update_time`, `deleted`) VALUES (1, 'system-user', '系统用户', 'system_users', 'id', 'nickname', 'id', 10, '', 'tenant_id', 'deleted', '0', 0, '后台表单用户参照', 'admin', '2026-05-15 00:00:00', 'admin', '2026-05-15 00:00:00', b'0');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for infra_biz_reference_field
+-- ----------------------------
+DROP TABLE IF EXISTS `infra_biz_reference_field`;
+CREATE TABLE `infra_biz_reference_field`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `reference_id` bigint NOT NULL COMMENT '参照编号',
+  `field_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '字段名',
+  `alias_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '字段别名',
+  `label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '字段标签',
+  `list_visible` bit(1) NOT NULL DEFAULT b'0' COMMENT '列表可见',
+  `search_visible` bit(1) NOT NULL DEFAULT b'0' COMMENT '搜索可见',
+  `return_visible` bit(1) NOT NULL DEFAULT b'0' COMMENT '回写可见',
+  `return_field` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '回写字段',
+  `search_component` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'Input' COMMENT '搜索组件',
+  `search_operator` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT 'eq' COMMENT '搜索操作符',
+  `dict_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '字典类型',
+  `width` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '列宽',
+  `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
+  `status` tinyint NOT NULL DEFAULT 0 COMMENT '状态',
+  `creator` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updater` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_reference_id`(`reference_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '业务参照字段表';
+
+-- ----------------------------
+-- Records of infra_biz_reference_field
+-- ----------------------------
+BEGIN;
+INSERT INTO `infra_biz_reference_field` (`id`, `reference_id`, `field_name`, `alias_name`, `label`, `list_visible`, `search_visible`, `return_visible`, `return_field`, `search_component`, `search_operator`, `dict_type`, `width`, `sort`, `status`, `creator`, `create_time`, `updater`, `update_time`, `deleted`) VALUES (1, 1, 'id', 'id', '用户编号', b'0', b'0', b'1', 'userId', 'Input', 'eq', NULL, '100', 1, 0, 'admin', '2026-05-15 00:00:00', 'admin', '2026-05-15 00:00:00', b'0');
+INSERT INTO `infra_biz_reference_field` (`id`, `reference_id`, `field_name`, `alias_name`, `label`, `list_visible`, `search_visible`, `return_visible`, `return_field`, `search_component`, `search_operator`, `dict_type`, `width`, `sort`, `status`, `creator`, `create_time`, `updater`, `update_time`, `deleted`) VALUES (2, 1, 'nickname', 'nickname', '员工姓名', b'1', b'1', b'1', 'userName', 'Input', 'like', NULL, '160', 2, 0, 'admin', '2026-05-15 00:00:00', 'admin', '2026-05-15 00:00:00', b'0');
+INSERT INTO `infra_biz_reference_field` (`id`, `reference_id`, `field_name`, `alias_name`, `label`, `list_visible`, `search_visible`, `return_visible`, `return_field`, `search_component`, `search_operator`, `dict_type`, `width`, `sort`, `status`, `creator`, `create_time`, `updater`, `update_time`, `deleted`) VALUES (3, 1, 'username', 'username', '用户账号', b'1', b'1', b'0', NULL, 'Input', 'like', NULL, '160', 3, 0, 'admin', '2026-05-15 00:00:00', 'admin', '2026-05-15 00:00:00', b'0');
+INSERT INTO `infra_biz_reference_field` (`id`, `reference_id`, `field_name`, `alias_name`, `label`, `list_visible`, `search_visible`, `return_visible`, `return_field`, `search_component`, `search_operator`, `dict_type`, `width`, `sort`, `status`, `creator`, `create_time`, `updater`, `update_time`, `deleted`) VALUES (4, 1, 'mobile', 'mobile', '手机号', b'1', b'1', b'1', 'userMobile', 'Input', 'like', NULL, '140', 4, 0, 'admin', '2026-05-15 00:00:00', 'admin', '2026-05-15 00:00:00', b'0');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for infra_data_source_config
 -- ----------------------------
 DROP TABLE IF EXISTS `infra_data_source_config`;
@@ -1808,6 +1882,7 @@ INSERT INTO `system_menu` (`id`, `name`, `permission`, `type`, `sort`, `parent_i
 INSERT INTO `system_menu` (`id`, `name`, `permission`, `type`, `sort`, `parent_id`, `path`, `icon`, `component`, `component_name`, `status`, `visible`, `keep_alive`, `always_show`, `creator`, `create_time`, `updater`, `update_time`, `deleted`) VALUES (1029, '字典删除', 'system:dict:delete', 3, 4, 105, '', '', '', NULL, 0, b'1', b'1', b'1', 'admin', '2021-01-05 17:03:48', '1', '2022-04-20 17:03:10', b'0');
 INSERT INTO `system_menu` (`id`, `name`, `permission`, `type`, `sort`, `parent_id`, `path`, `icon`, `component`, `component_name`, `status`, `visible`, `keep_alive`, `always_show`, `creator`, `create_time`, `updater`, `update_time`, `deleted`) VALUES (1030, '字典导出', 'system:dict:export', 3, 5, 105, '#', '#', '', NULL, 0, b'1', b'1', b'1', 'admin', '2021-01-05 17:03:48', '', '2022-04-20 17:03:10', b'0');
 INSERT INTO `system_menu` (`id`, `name`, `permission`, `type`, `sort`, `parent_id`, `path`, `icon`, `component`, `component_name`, `status`, `visible`, `keep_alive`, `always_show`, `creator`, `create_time`, `updater`, `update_time`, `deleted`) VALUES (1031, '配置查询', 'infra:config:query', 3, 1, 106, '', '', '', NULL, 0, b'1', b'1', b'1', 'admin', '2021-01-05 17:03:48', '', '2022-04-20 17:03:10', b'0');
+INSERT INTO `system_menu` (`id`, `name`, `permission`, `type`, `sort`, `parent_id`, `path`, `icon`, `component`, `component_name`, `status`, `visible`, `keep_alive`, `always_show`, `creator`, `create_time`, `updater`, `update_time`, `deleted`) VALUES (2990, '业务参照查询', 'infra:biz-reference:query', 3, 99, 2, '', '', '', NULL, 0, b'1', b'1', b'1', 'admin', '2026-05-15 00:00:00', 'admin', '2026-05-15 00:00:00', b'0');
 INSERT INTO `system_menu` (`id`, `name`, `permission`, `type`, `sort`, `parent_id`, `path`, `icon`, `component`, `component_name`, `status`, `visible`, `keep_alive`, `always_show`, `creator`, `create_time`, `updater`, `update_time`, `deleted`) VALUES (1032, '配置新增', 'infra:config:create', 3, 2, 106, '', '', '', NULL, 0, b'1', b'1', b'1', 'admin', '2021-01-05 17:03:48', '1', '2022-04-20 17:03:10', b'0');
 INSERT INTO `system_menu` (`id`, `name`, `permission`, `type`, `sort`, `parent_id`, `path`, `icon`, `component`, `component_name`, `status`, `visible`, `keep_alive`, `always_show`, `creator`, `create_time`, `updater`, `update_time`, `deleted`) VALUES (1033, '配置修改', 'infra:config:update', 3, 3, 106, '', '', '', NULL, 0, b'1', b'1', b'1', 'admin', '2021-01-05 17:03:48', '1', '2022-04-20 17:03:10', b'0');
 INSERT INTO `system_menu` (`id`, `name`, `permission`, `type`, `sort`, `parent_id`, `path`, `icon`, `component`, `component_name`, `status`, `visible`, `keep_alive`, `always_show`, `creator`, `create_time`, `updater`, `update_time`, `deleted`) VALUES (1034, '配置删除', 'infra:config:delete', 3, 4, 106, '', '', '', NULL, 0, b'1', b'1', b'1', 'admin', '2021-01-05 17:03:48', '1', '2022-04-20 17:03:10', b'0');

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.iocoder.yudao.module.infra.dal.mysql.bizreference.BizReferenceQueryMapper">
+
+    <select id="selectPage" resultType="java.util.LinkedHashMap">
+        SELECT
+        <foreach collection="query.selectFields" item="field" separator=",">
+            ${field.column} AS ${field.alias}
+        </foreach>
+        FROM ${query.tableName}
+        <where>
+            <foreach collection="query.conditions" item="condition">
+                <choose>
+                    <when test="condition.operator == 'eq'">
+                        AND ${condition.column} = #{condition.value}
+                    </when>
+                    <when test="condition.operator == 'like'">
+                        AND ${condition.column} LIKE #{condition.value}
+                    </when>
+                    <when test="condition.operator == 'in'">
+                        AND ${condition.column} IN
+                        <foreach collection="condition.values" item="value" open="(" close=")" separator=",">
+                            #{value}
+                        </foreach>
+                    </when>
+                    <when test="condition.operator == 'between'">
+                        AND ${condition.column} BETWEEN #{condition.values[0]} AND #{condition.values[1]}
+                    </when>
+                </choose>
+            </foreach>
+        </where>
+    </select>
+
+</mapper>

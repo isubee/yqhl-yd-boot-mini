@@ -300,6 +300,131 @@ SET IDENTITY_INSERT infra_config OFF;
 -- @formatter:on
 
 -- ----------------------------
+-- Table structure for infra_biz_reference
+-- ----------------------------
+CREATE TABLE infra_biz_reference
+(
+    id                bigint                                 NOT NULL PRIMARY KEY IDENTITY,
+    code              varchar(64)                            NOT NULL,
+    name              varchar(100)                           NOT NULL,
+    table_name        varchar(64)                            NOT NULL,
+    value_field       varchar(64)                            NOT NULL,
+    label_field       varchar(64)                            NOT NULL,
+    row_key           varchar(64)  DEFAULT NULL              NULL,
+    default_page_size int          DEFAULT 10                NOT NULL,
+    permission        varchar(100) DEFAULT ''                NULL,
+    tenant_column     varchar(64)  DEFAULT NULL              NULL,
+    deleted_column    varchar(64)  DEFAULT NULL              NULL,
+    deleted_value     varchar(64)  DEFAULT NULL              NULL,
+    status            smallint     DEFAULT 0                 NOT NULL,
+    remark            varchar(500) DEFAULT NULL              NULL,
+    creator           varchar(64)  DEFAULT ''                NULL,
+    create_time       datetime     DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updater           varchar(64)  DEFAULT ''                NULL,
+    update_time       datetime     DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    deleted           bit          DEFAULT '0'               NOT NULL
+);
+
+COMMENT ON COLUMN infra_biz_reference.id IS '编号';
+COMMENT ON COLUMN infra_biz_reference.code IS '参照编码';
+COMMENT ON COLUMN infra_biz_reference.name IS '参照名称';
+COMMENT ON COLUMN infra_biz_reference.table_name IS '表名';
+COMMENT ON COLUMN infra_biz_reference.value_field IS '值字段';
+COMMENT ON COLUMN infra_biz_reference.label_field IS '展示字段';
+COMMENT ON COLUMN infra_biz_reference.row_key IS '行主键字段';
+COMMENT ON COLUMN infra_biz_reference.default_page_size IS '默认分页大小';
+COMMENT ON COLUMN infra_biz_reference.permission IS '业务权限标识';
+COMMENT ON COLUMN infra_biz_reference.tenant_column IS '租户字段';
+COMMENT ON COLUMN infra_biz_reference.deleted_column IS '逻辑删除字段';
+COMMENT ON COLUMN infra_biz_reference.deleted_value IS '未删除值';
+COMMENT ON COLUMN infra_biz_reference.status IS '状态';
+COMMENT ON COLUMN infra_biz_reference.remark IS '备注';
+COMMENT ON COLUMN infra_biz_reference.creator IS '创建者';
+COMMENT ON COLUMN infra_biz_reference.create_time IS '创建时间';
+COMMENT ON COLUMN infra_biz_reference.updater IS '更新者';
+COMMENT ON COLUMN infra_biz_reference.update_time IS '更新时间';
+COMMENT ON COLUMN infra_biz_reference.deleted IS '是否删除';
+COMMENT ON TABLE infra_biz_reference IS '业务参照表';
+
+CREATE UNIQUE INDEX uk_infra_biz_reference_code ON infra_biz_reference (code);
+
+-- ----------------------------
+-- Records of infra_biz_reference
+-- ----------------------------
+-- @formatter:off
+SET IDENTITY_INSERT infra_biz_reference ON;
+BEGIN;
+INSERT INTO infra_biz_reference (id, code, name, table_name, value_field, label_field, row_key, default_page_size, permission, tenant_column, deleted_column, deleted_value, status, remark, creator, create_time, updater, update_time, deleted) VALUES (1, 'system-user', '系统用户', 'system_users', 'id', 'nickname', 'id', 10, '', 'tenant_id', 'deleted', '0', 0, '后台表单用户参照', 'admin', '2026-05-15 00:00:00', 'admin', '2026-05-15 00:00:00', '0');
+COMMIT;
+SET IDENTITY_INSERT infra_biz_reference OFF;
+-- @formatter:on
+
+-- ----------------------------
+-- Table structure for infra_biz_reference_field
+-- ----------------------------
+CREATE TABLE infra_biz_reference_field
+(
+    id               bigint                                 NOT NULL PRIMARY KEY IDENTITY,
+    reference_id     bigint                                 NOT NULL,
+    field_name       varchar(64)                            NOT NULL,
+    alias_name       varchar(64)  DEFAULT NULL              NULL,
+    label            varchar(100) DEFAULT NULL              NULL,
+    list_visible     bit          DEFAULT '0'               NOT NULL,
+    search_visible   bit          DEFAULT '0'               NOT NULL,
+    return_visible   bit          DEFAULT '0'               NOT NULL,
+    return_field     varchar(64)  DEFAULT NULL              NULL,
+    search_component varchar(32)  DEFAULT 'Input'           NULL,
+    search_operator  varchar(16)  DEFAULT 'eq'              NULL,
+    dict_type        varchar(100) DEFAULT NULL              NULL,
+    width            varchar(32)  DEFAULT NULL              NULL,
+    sort             int          DEFAULT 0                 NOT NULL,
+    status           smallint     DEFAULT 0                 NOT NULL,
+    creator          varchar(64)  DEFAULT ''                NULL,
+    create_time      datetime     DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updater          varchar(64)  DEFAULT ''                NULL,
+    update_time      datetime     DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    deleted          bit          DEFAULT '0'               NOT NULL
+);
+
+COMMENT ON COLUMN infra_biz_reference_field.id IS '编号';
+COMMENT ON COLUMN infra_biz_reference_field.reference_id IS '参照编号';
+COMMENT ON COLUMN infra_biz_reference_field.field_name IS '字段名';
+COMMENT ON COLUMN infra_biz_reference_field.alias_name IS '字段别名';
+COMMENT ON COLUMN infra_biz_reference_field.label IS '字段标签';
+COMMENT ON COLUMN infra_biz_reference_field.list_visible IS '列表可见';
+COMMENT ON COLUMN infra_biz_reference_field.search_visible IS '搜索可见';
+COMMENT ON COLUMN infra_biz_reference_field.return_visible IS '回写可见';
+COMMENT ON COLUMN infra_biz_reference_field.return_field IS '回写字段';
+COMMENT ON COLUMN infra_biz_reference_field.search_component IS '搜索组件';
+COMMENT ON COLUMN infra_biz_reference_field.search_operator IS '搜索操作符';
+COMMENT ON COLUMN infra_biz_reference_field.dict_type IS '字典类型';
+COMMENT ON COLUMN infra_biz_reference_field.width IS '列宽';
+COMMENT ON COLUMN infra_biz_reference_field.sort IS '排序';
+COMMENT ON COLUMN infra_biz_reference_field.status IS '状态';
+COMMENT ON COLUMN infra_biz_reference_field.creator IS '创建者';
+COMMENT ON COLUMN infra_biz_reference_field.create_time IS '创建时间';
+COMMENT ON COLUMN infra_biz_reference_field.updater IS '更新者';
+COMMENT ON COLUMN infra_biz_reference_field.update_time IS '更新时间';
+COMMENT ON COLUMN infra_biz_reference_field.deleted IS '是否删除';
+COMMENT ON TABLE infra_biz_reference_field IS '业务参照字段表';
+
+CREATE INDEX idx_infra_biz_reference_field_reference_id ON infra_biz_reference_field (reference_id);
+
+-- ----------------------------
+-- Records of infra_biz_reference_field
+-- ----------------------------
+-- @formatter:off
+SET IDENTITY_INSERT infra_biz_reference_field ON;
+BEGIN;
+INSERT INTO infra_biz_reference_field (id, reference_id, field_name, alias_name, label, list_visible, search_visible, return_visible, return_field, search_component, search_operator, dict_type, width, sort, status, creator, create_time, updater, update_time, deleted) VALUES (1, 1, 'id', 'id', '用户编号', '0', '0', '1', 'userId', 'Input', 'eq', NULL, '100', 1, 0, 'admin', '2026-05-15 00:00:00', 'admin', '2026-05-15 00:00:00', '0');
+INSERT INTO infra_biz_reference_field (id, reference_id, field_name, alias_name, label, list_visible, search_visible, return_visible, return_field, search_component, search_operator, dict_type, width, sort, status, creator, create_time, updater, update_time, deleted) VALUES (2, 1, 'nickname', 'nickname', '员工姓名', '1', '1', '1', 'userName', 'Input', 'like', NULL, '160', 2, 0, 'admin', '2026-05-15 00:00:00', 'admin', '2026-05-15 00:00:00', '0');
+INSERT INTO infra_biz_reference_field (id, reference_id, field_name, alias_name, label, list_visible, search_visible, return_visible, return_field, search_component, search_operator, dict_type, width, sort, status, creator, create_time, updater, update_time, deleted) VALUES (3, 1, 'username', 'username', '用户账号', '1', '1', '0', NULL, 'Input', 'like', NULL, '160', 3, 0, 'admin', '2026-05-15 00:00:00', 'admin', '2026-05-15 00:00:00', '0');
+INSERT INTO infra_biz_reference_field (id, reference_id, field_name, alias_name, label, list_visible, search_visible, return_visible, return_field, search_component, search_operator, dict_type, width, sort, status, creator, create_time, updater, update_time, deleted) VALUES (4, 1, 'mobile', 'mobile', '手机号', '1', '1', '1', 'userMobile', 'Input', 'like', NULL, '140', 4, 0, 'admin', '2026-05-15 00:00:00', 'admin', '2026-05-15 00:00:00', '0');
+COMMIT;
+SET IDENTITY_INSERT infra_biz_reference_field OFF;
+-- @formatter:on
+
+-- ----------------------------
 -- Table structure for infra_data_source_config
 -- ----------------------------
 CREATE TABLE infra_data_source_config
@@ -1686,6 +1811,7 @@ INSERT INTO system_menu (id, name, permission, type, sort, parent_id, path, icon
 INSERT INTO system_menu (id, name, permission, type, sort, parent_id, path, icon, component, component_name, status, visible, keep_alive, always_show, creator, create_time, updater, update_time, deleted) VALUES (1029, '字典删除', 'system:dict:delete', 3, 4, 105, '', '', '', NULL, 0, '1', '1', '1', 'admin', '2021-01-05 17:03:48', '1', '2022-04-20 17:03:10', '0');
 INSERT INTO system_menu (id, name, permission, type, sort, parent_id, path, icon, component, component_name, status, visible, keep_alive, always_show, creator, create_time, updater, update_time, deleted) VALUES (1030, '字典导出', 'system:dict:export', 3, 5, 105, '#', '#', '', NULL, 0, '1', '1', '1', 'admin', '2021-01-05 17:03:48', '', '2022-04-20 17:03:10', '0');
 INSERT INTO system_menu (id, name, permission, type, sort, parent_id, path, icon, component, component_name, status, visible, keep_alive, always_show, creator, create_time, updater, update_time, deleted) VALUES (1031, '配置查询', 'infra:config:query', 3, 1, 106, '', '', '', NULL, 0, '1', '1', '1', 'admin', '2021-01-05 17:03:48', '', '2022-04-20 17:03:10', '0');
+INSERT INTO system_menu (id, name, permission, type, sort, parent_id, path, icon, component, component_name, status, visible, keep_alive, always_show, creator, create_time, updater, update_time, deleted) VALUES (2990, '业务参照查询', 'infra:biz-reference:query', 3, 99, 2, '', '', '', NULL, 0, '1', '1', '1', 'admin', '2026-05-15 00:00:00', 'admin', '2026-05-15 00:00:00', '0');
 INSERT INTO system_menu (id, name, permission, type, sort, parent_id, path, icon, component, component_name, status, visible, keep_alive, always_show, creator, create_time, updater, update_time, deleted) VALUES (1032, '配置新增', 'infra:config:create', 3, 2, 106, '', '', '', NULL, 0, '1', '1', '1', 'admin', '2021-01-05 17:03:48', '1', '2022-04-20 17:03:10', '0');
 INSERT INTO system_menu (id, name, permission, type, sort, parent_id, path, icon, component, component_name, status, visible, keep_alive, always_show, creator, create_time, updater, update_time, deleted) VALUES (1033, '配置修改', 'infra:config:update', 3, 3, 106, '', '', '', NULL, 0, '1', '1', '1', 'admin', '2021-01-05 17:03:48', '1', '2022-04-20 17:03:10', '0');
 INSERT INTO system_menu (id, name, permission, type, sort, parent_id, path, icon, component, component_name, status, visible, keep_alive, always_show, creator, create_time, updater, update_time, deleted) VALUES (1034, '配置删除', 'infra:config:delete', 3, 4, 106, '', '', '', NULL, 0, '1', '1', '1', 'admin', '2021-01-05 17:03:48', '1', '2022-04-20 17:03:10', '0');

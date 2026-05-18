@@ -56,6 +56,13 @@ public interface ErrorCodeConstants {
     ErrorCode DATA_SOURCE_CONFIG_NOT_EXISTS = new ErrorCode(1_001_007_000, "数据源配置不存在");
     ErrorCode DATA_SOURCE_CONFIG_NOT_OK = new ErrorCode(1_001_007_001, "数据源配置不正确，无法进行连接");
 
+    // ========== 业务参照 1-001-008-000 ==========
+    ErrorCode BIZ_REFERENCE_NOT_EXISTS = new ErrorCode(1_001_008_000, "业务参照不存在");
+    ErrorCode BIZ_REFERENCE_DISABLED = new ErrorCode(1_001_008_001, "业务参照已禁用");
+    ErrorCode BIZ_REFERENCE_INVALID_IDENTIFIER = new ErrorCode(1_001_008_002, "业务参照 SQL 标识符不合法");
+    ErrorCode BIZ_REFERENCE_OPERATOR_UNSUPPORTED = new ErrorCode(1_001_008_003, "业务参照查询操作符不支持");
+    ErrorCode BIZ_REFERENCE_PERMISSION_DENIED = new ErrorCode(1_001_008_004, "没有业务参照查询权限");
+
     // ========== 学生 1-001-201-000 ==========
     ErrorCode DEMO01_CONTACT_NOT_EXISTS = new ErrorCode(1_001_201_000, "示例联系人不存在");
     ErrorCode DEMO02_CATEGORY_NOT_EXISTS = new ErrorCode(1_001_201_001, "示例分类不存在");
